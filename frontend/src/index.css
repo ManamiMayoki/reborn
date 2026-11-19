@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-reborn-darkest text-reborn-offwhite font-sans;
+    background-image: 
+      radial-gradient(circle at 15% 15%, rgba(163, 59, 38, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 25%, rgba(164, 119, 58, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 50% 85%, rgba(11, 19, 43, 0.6) 0%, transparent 60%);
+    background-attachment: fixed;
+  }
+}
+
+/* Custom Scientific Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #060B18;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E2D58;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A4773A;
+}
+
+/* Glassmorphism panel helper */
+.reborn-glass {
+  background: rgba(14, 24, 52, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(30, 45, 88, 0.7);
+}
+
+.reborn-glass-card {
+  background: linear-gradient(135deg, rgba(14, 24, 52, 0.85) 0%, rgba(11, 19, 43, 0.7) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(164, 119, 58, 0.2);
+}
+
+/* Glowing borders */
+.reborn-glow-gold {
+  border-color: rgba(164, 119, 58, 0.6);
+  box-shadow: 0 0 15px -3px rgba(164, 119, 58, 0.3);
+}
+
+.reborn-glow-cyan {
+  border-color: rgba(0, 229, 255, 0.6);
+  box-shadow: 0 0 15px -3px rgba(0, 229, 255, 0.3);
+}
+
+.reborn-glow-terracotta {
+  border-color: rgba(163, 59, 38, 0.6);
+  box-shadow: 0 0 15px -3px rgba(163, 59, 38, 0.3);
+}
+
+/* Subtle grid line overlay */
+.bg-grid-pattern {
+  background-size: 30px 30px;
+  background-image: 
+    linear-gradient(to right, rgba(30, 45, 88, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 45, 88, 0.15) 1px, transparent 1px);
+}
