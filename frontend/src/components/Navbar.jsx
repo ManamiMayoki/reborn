@@ -3,13 +3,10 @@ import {
   Atom,
   RotateCcw,
   Download,
-  AlertCircle,
-  Github,
-  GitBranch,
-  Sparkles,
-  Layers,
-  ChevronRight,
   Shield,
+  Layers,
+  Github,
+  ChevronDown,
 } from 'lucide-react';
 
 export default function Navbar({
@@ -22,36 +19,31 @@ export default function Navbar({
   isSeeding,
 }) {
   return (
-    <header className="sticky top-0 z-40 w-full h-16 reborn-glass border-b border-reborn-border/80 px-4 md:px-8 flex items-center justify-between">
-      {/* Brand Identity */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-reborn-maroon via-reborn-terracotta to-reborn-gold shadow-glow-gold">
-          <Atom className="w-6 h-6 text-reborn-offwhite animate-spin-slow" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-reborn-cyan animate-ping"></span>
+    <header className="sticky top-0 z-40 w-full h-14 reborn-glass border-b border-reborn-border/60 px-4 md:px-6 flex items-center justify-between">
+      {/* Brand Identity - Minimal & Crisp */}
+      <div className="flex items-center gap-2.5">
+        <div className="w-8 h-8 rounded-lg bg-reborn-navy border border-reborn-cyan/30 flex items-center justify-center shadow-glow">
+          <Atom className="w-4 h-4 text-reborn-cyan" />
         </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-extrabold tracking-tight font-sans text-transparent bg-clip-text bg-gradient-to-r from-reborn-offwhite via-reborn-gold to-reborn-cyan">
-              REBORN
-            </h1>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-reborn-navy border border-reborn-gold/40 text-reborn-gold font-bold uppercase tracking-wider">
-              MoleculeX v1.0
-            </span>
-          </div>
-          <p className="text-[10px] font-mono text-reborn-offwhite/60 hidden sm:block">
-            3D Computational Drug Discovery & Structural Workflow Platform
-          </p>
+        <div className="flex items-baseline gap-2">
+          <span className="text-base font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-reborn-offwhite via-reborn-gold to-reborn-cyan font-sans">
+            REBORN
+          </span>
+          <span className="text-[10px] font-mono text-reborn-gold/70 hidden sm:inline">
+            v1.0
+          </span>
         </div>
       </div>
 
-      {/* Center: Project Selector & Branch status */}
-      <div className="hidden lg:flex items-center gap-3">
-        <div className="reborn-glass px-3 py-1.5 rounded-xl border border-reborn-border flex items-center gap-2">
-          <span className="text-xs text-reborn-offwhite/60 font-mono">Campaign:</span>
+      {/* Center: Clean Campaign Selector Pill */}
+      <div className="flex items-center">
+        <div className="relative flex items-center bg-reborn-card/80 border border-reborn-border/70 rounded-lg px-2.5 py-1 text-xs font-mono text-reborn-offwhite hover:border-reborn-gold/50 transition-colors">
+          <Layers className="w-3.5 h-3.5 text-reborn-gold mr-2 shrink-0" />
           <select
             value={currentProject?.id || currentProject?._id || ''}
             onChange={(e) => onSelectProject(e.target.value)}
-            className="bg-transparent text-xs font-mono font-medium text-reborn-gold focus:outline-none cursor-pointer"
+            className="bg-transparent text-xs font-mono font-medium text-reborn-offwhite focus:outline-none cursor-pointer pr-5 appearance-none max-w-[260px] sm:max-w-[340px] truncate"
+            title="Switch Active Discovery Campaign"
           >
             {projects.map((p) => (
               <option key={p.id || p._id} value={p.id || p._id} className="bg-reborn-darkest text-white">
@@ -59,45 +51,53 @@ export default function Navbar({
               </option>
             ))}
           </select>
-        </div>
-
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-reborn-navy/80 border border-reborn-border text-[11px] font-mono text-reborn-emerald">
-          <GitBranch className="w-3.5 h-3.5 text-reborn-emerald" />
-          <span>branch: development</span>
+          <ChevronDown className="w-3 h-3 text-reborn-offwhite/50 absolute right-2 pointer-events-none" />
         </div>
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        {/* Scientific Disclaimer Button */}
+      {/* Right Actions - Sleek & Uncluttered */}
+      <div className="flex items-center gap-2">
+        {/* Scientific Scope Modal Trigger */}
         <button
           onClick={onOpenDisclaimer}
-          className="px-2.5 py-1.5 rounded-xl reborn-glass border border-reborn-border hover:border-reborn-gold/60 text-xs font-mono text-reborn-gold flex items-center gap-1.5 transition-all"
-          title="Open Scientific Predictor Scope Notice"
+          className="h-8 px-2.5 rounded-lg border border-reborn-border/70 hover:border-reborn-gold/60 text-xs font-mono text-reborn-offwhite/80 hover:text-white flex items-center gap-1.5 transition-all"
+          title="Scientific Scope & Validation Notice"
         >
-          <Shield className="w-3.5 h-3.5" />
-          <span className="hidden md:inline">Scientific Scope</span>
+          <Shield className="w-3.5 h-3.5 text-reborn-gold" />
+          <span className="hidden md:inline">Scope</span>
         </button>
 
-        {/* Seed Demo Data Button */}
+        {/* Reset / Seed Demo Data */}
         <button
           onClick={onResetSeed}
           disabled={isSeeding}
-          className="px-3 py-1.5 rounded-xl bg-reborn-navy border border-reborn-cyan/40 hover:border-reborn-cyan text-xs font-mono text-reborn-cyan flex items-center gap-1.5 transition-all shadow-glow hover:bg-reborn-cyan/10 disabled:opacity-50"
-          title="Reset and reload benchmark drug discovery campaign"
+          className="h-8 px-2.5 rounded-lg border border-reborn-border/70 hover:border-reborn-cyan/60 text-xs font-mono text-reborn-offwhite/80 hover:text-white flex items-center gap-1.5 transition-all disabled:opacity-50"
+          title="Reset and reload benchmark dataset"
         >
-          <RotateCcw className={`w-3.5 h-3.5 ${isSeeding ? 'animate-spin' : ''}`} />
-          <span className="hidden sm:inline">{isSeeding ? 'Seeding...' : 'Seed Benchmark'}</span>
+          <RotateCcw className={`w-3.5 h-3.5 text-reborn-cyan ${isSeeding ? 'animate-spin' : ''}`} />
+          <span className="hidden md:inline">{isSeeding ? 'Resetting...' : 'Reset'}</span>
         </button>
 
-        {/* Export Report Button */}
+        {/* Primary Action: Export Dossier */}
         <button
           onClick={onExportReport}
-          className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-reborn-terracotta via-reborn-maroon to-reborn-gold text-white font-medium text-xs font-sans flex items-center gap-1.5 shadow-glow-gold hover:opacity-95 transition-opacity"
+          className="h-8 px-3 rounded-lg bg-gradient-to-r from-reborn-terracotta to-reborn-gold text-white font-medium text-xs flex items-center gap-1.5 shadow-sm hover:opacity-95 transition-opacity"
+          title="Export Discovery Report Dossier"
         >
           <Download className="w-3.5 h-3.5" />
-          <span>Export Dossier</span>
+          <span>Export</span>
         </button>
+
+        {/* GitHub Repository Link */}
+        <a
+          href="https://github.com/ManamiMayoki/reborn"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="h-8 w-8 rounded-lg border border-reborn-border/70 hover:border-reborn-offwhite/40 flex items-center justify-center text-reborn-offwhite/70 hover:text-white transition-colors"
+          title="View Source on GitHub"
+        >
+          <Github className="w-4 h-4" />
+        </a>
       </div>
     </header>
   );
