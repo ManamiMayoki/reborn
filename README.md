@@ -2,7 +2,10 @@
 ### Interactive 3D Computational Drug Discovery & Molecular Workflow Platform
 *Inspired by the MoleculeX Specification*
 
-[![Branch](https://img.shields.io/badge/branch-development-00E5FF.svg)](#git--three-branch-workflow-strategy)
+[![Branch: Development](https://img.shields.io/badge/branch-development-00E5FF.svg)](#git--three-branch-workflow-strategy)
+[![Branch: Release](https://img.shields.io/badge/branch-release-A4773A.svg)](#git--three-branch-workflow-strategy)
+[![Branch: Production](https://img.shields.io/badge/branch-production-10B981.svg)](#git--three-branch-workflow-strategy)
+[![CI Pipeline](https://img.shields.io/badge/CI-GitHub%20Actions-1E2D58.svg?logo=githubactions)](#-continuous-integration--continuous-deployment-cicd)
 [![Docker](https://img.shields.io/badge/docker-orchestrated-A4773A.svg)](#docker-deployment)
 [![Three.js](https://img.shields.io/badge/Three.js-R3F%20%26%20Drei-800000.svg)](#interactive-3d-molecular-canvas)
 [![GSAP](https://img.shields.io/badge/GSAP-Choreographed-A33B26.svg)](#motion--interaction-design)
@@ -253,6 +256,89 @@ npm run dev
 
 ---
 
+## ⚡ Continuous Integration & Continuous Deployment (CI/CD)
+
+Reborn includes production-grade GitHub Actions workflows ensuring software quality, biophysical consistency, and zero-downtime deployment verification across all three branches:
+
+### 1. Continuous Integration Pipeline (`.github/workflows/ci.yml`)
+Triggers on every `push` and `pull_request` targeting `development`, `release`, or `production`.
+
+```mermaid
+flowchart TD
+    Trigger["Code Push / Pull Request"] --> BTest["Backend Matrix Test (Node 20, 22)\n- npm ci\n- seed data verification\n- server boot test"]
+    Trigger --> FBuild["Frontend Production Build\n- npm ci\n- Vite asset compilation\n- index.html artifact check"]
+    BTest & FBuild --> DBuild["Docker Verification\n- Docker Buildx setup\n- docker compose config check\n- parallel container build"]
+
+    classDef job fill:#0E1834,stroke:#00E5FF,stroke-width:1.5px,color:#F7F4EB;
+    class BTest,FBuild,DBuild job;
+```
+
+- **Backend Verification**: Runs across Node.js matrices (`20.x` and `22.x`), validates the computational seed generator, tests Mongoose schemas, and verifies the Express REST server startup.
+- **Frontend Build**: Installs dependencies with strict lockfile parity, executes `vite build`, and validates asset generation.
+- **Docker Verification**: Validates the multi-container `docker-compose.yml` specification and executes parallel image builds.
+
+### 2. Continuous Delivery Pipeline (`.github/workflows/cd.yml`)
+- **Staging Release Candidate (`release` branch)**: Triggers staging packaging, prepares release notes, and stamps release candidate hashes.
+- **Production Deployment (`production` branch)**: Automates production distribution generation, tags stable releases, and packages the final competition delivery.
+
+---
+
+## 🔗 Connecting to GitHub (`https://github.com/ManamiMayoki/reborn.git`)
+
+The local repository is pre-configured with the remote origin:
+`https://github.com/ManamiMayoki/reborn.git`
+
+### Step 1: Ensure GitHub Authentication
+Because GitHub requires authenticated access to push to repositories, ensure you are authenticated using any of the following methods:
+
+#### Method A: Using GitHub CLI (Quickest)
+```bash
+gh auth login
+# Follow the interactive prompt: Select 'GitHub.com' -> 'HTTPS' -> 'Login with a web browser' (or paste Personal Access Token)
+```
+
+#### Method B: Using a GitHub Personal Access Token (PAT)
+1. Go to **GitHub Settings** -> **Developer settings** -> **Personal access tokens (classic)** -> **Generate new token**.
+2. Select scopes: `repo` (Full control of private repositories) and `workflow`.
+3. Set the remote URL with your token or username:
+```bash
+git remote set-url origin https://<YOUR_GITHUB_TOKEN>@github.com/ManamiMayoki/reborn.git
+```
+
+#### Method C: Using SSH Key
+```bash
+# Set remote to SSH
+git remote set-url origin git@github.com:ManamiMayoki/reborn.git
+```
+
+---
+
+### Step 2: Push All Three Branches to GitHub
+
+Once authenticated, push `development`, `release`, and `production` with the automated helper script:
+
+```bash
+# Push all three branches in one command
+./scripts/push-update.sh --push-all
+```
+
+Or using native Git commands:
+```bash
+# Push development branch
+git checkout development
+git push -u origin development
+
+# Push release branch
+git checkout release
+git push -u origin release
+
+# Push production branch
+git checkout production
+git push -u origin production
+```
+
+---
+
 ## 🌿 Git & Three-Branch Workflow Strategy
 
 Reborn adheres to an industrial three-branch release lifecycle to ensure atomic changes, staging verification, and stable deployments:
@@ -273,21 +359,18 @@ Reborn adheres to an industrial three-branch release lifecycle to ensure atomic 
 - **`production`**: Tested, stable production release.
 
 ### 2. Automated Git Helper Script (`scripts/push-update.sh`)
-To maintain small, atomic commits and automatic branch tracking, use the included helper script:
+Use the helper script to manage your atomic commits and branch promotions:
 
 ```bash
-# Make executable (if not already set)
-chmod +x scripts/push-update.sh
+# Mode 1: Atomic commit and push on active branch
+./scripts/push-update.sh "feat(docking): add interactive 3D search cage and pose metrics"
 
-# Commit and push with a clear conventional message
-./scripts/push-update.sh "feat(3d): enhance residue billboard labels and glowing contact cylinders"
+# Mode 2: Promote updates across all three branches (development -> release -> production)
+./scripts/push-update.sh --sync-all "chore: promote v1.0.0 milestone to release and production"
+
+# Mode 3: Push all three branches to GitHub
+./scripts/push-update.sh --push-all
 ```
-
-The script automatically:
-1. Detects the current active branch.
-2. Stages all modified and new files (`git add -A`).
-3. Creates a structured, atomic commit with your message.
-4. Pushes cleanly to `origin/<current-branch>`.
 
 ---
 
